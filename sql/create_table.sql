@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS urls (
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    url varchar(255) UNIQUE
+);
+

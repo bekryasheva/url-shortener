@@ -1,0 +1,16 @@
+api:
+  address: ":8080"
+
+url:
+  address_prefix: "http://localhost:8080/"
+
+storage: "postgresql"
+
+postgresql:
+  host: "localhost"
+  port: "5432"
+  user: "urlshortener"
+  password: "password"
+  name: "urlshortener"
+  sslmode: "disable"
+

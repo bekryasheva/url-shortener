@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  url_shortener:
+    build: ./
+    environment:
+      - 'DB_HOST=db'
+      - 'DB_PORT=5432'
+      - 'DB_USER=urlshortener'
+      - 'DB_PASSWORD=password'
+      - 'DB_NAME=urlshortener'
+      - 'DB_SSLMODE=disable'
+      - 'API_ADDRESS=:8080'
+      - 'URL_ADDRESS_PREFIX=http://localhost:8080/'
+      - 'STORAGE=postgresql'
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbinit
+
+  db:
+    restart: always
+    image: postgres:latest
+    environment:
+      - 'POSTGRES_USER=urlshortener'
+      - 'POSTGRES_PASSWORD=password'
+      - 'POSTGRES_DB=urlshortener'
+    ports:
+      - "5432:5432"
+
+  dbinit:
+    image: postgres:latest
+    depends_on:
+      - db
+    restart: "no"
+    environment:
+      - 'PGPASSWORD=password'
+    volumes:
+      - ${PWD}/sql:/sql
+    entrypoint: >
+      bash -c 'until pg_isready -p 5432 -h db -U urlshortener;
+      do
+        echo "Waiting for postgres"
+        sleep 3;
+      done
+      && psql -p 5432 -W -h db -U urlshortener -d urlshortener -f "/sql/create_table.sql"'

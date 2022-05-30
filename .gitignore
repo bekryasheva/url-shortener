@@ -1,0 +1,9 @@
+# Ignore service files added by the operating system
+.DS_Store
+
+# Ignore configuration and temporary files of editors
+.idea
+
+# Ignore project build results
+url_shortener
+
